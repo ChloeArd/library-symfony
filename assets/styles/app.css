@@ -163,6 +163,7 @@ a {
 
 .width_50 {
     width: 50%;
+    margin: auto;
 }
 
 .width_30 {
@@ -204,4 +205,17 @@ a {
 
 .button_borrower:hover {
     background-color: #6c5a81;
+}
+
+header > div > a {
+    color: white;
+    padding: 20px;
+}
+
+header > div > a:hover {
+    text-decoration: underline;
+}
+
+.text_r {
+    text-align: right;
 }

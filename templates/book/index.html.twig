@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ books.0.category.name}}{% endblock %}
+{% block title %}
+    {% if books is not empty%}
+        {{ books.0.category.name}}
+    {% endif %}
+{% endblock %}
 
 {% block body %}
     {{ parent() }}
 
     <main class="width_80">
+        {% if books is not empty%}
         <h1 class="center">{{ books.0.category.name}}</h1>
         <a class="add" href="/book/add">Ajouter un livre</a>
         <div class="marg_30 flexRow center_flex2">
@@ -17,8 +22,13 @@
                     </a>
                 </div>
             {% endfor %}
-
         </div>
+            {% else %}
+                <div class="marg_30">
+                    <a class="add" href="/book/add">Ajouter un livre</a>
+                </div>
+                <p>Il n'y a aucun livre pour le moment !</p>
+        {% endif %}
 
     </main>
 {% endblock %}

@@ -39,7 +39,11 @@ class BorrowerController extends AbstractController {
         $entityManager->persist($borrower);
         $entityManager->flush();
 
-        return $this->render('borrower/add.html.twig');
+        $id = $borrower->getId();
+
+        return $this->redirect("/borrower/$id");
+
+        //return $this->render('borrower/add.html.twig');
     }
 
     /**
@@ -58,7 +62,11 @@ class BorrowerController extends AbstractController {
 
         $entityManager->flush();
 
-        return $this->render('borrower/update.html.twig');
+        $id = $borrower->getId();
+
+        return $this->redirect("/borrower/$id");
+
+        //return $this->render('borrower/update.html.twig');
     }
 
     /**
@@ -72,7 +80,11 @@ class BorrowerController extends AbstractController {
         $entityManager->remove($borrower);
         $entityManager->flush();
 
-        return $this->render('borrower/delete.html.twig');
+        $id = $borrower->getId();
+
+        return $this->redirect("/borrower/$id");
+
+        //return $this->render('borrower/delete.html.twig');
     }
 
 }

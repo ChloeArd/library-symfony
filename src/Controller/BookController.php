@@ -51,7 +51,11 @@ class BookController extends AbstractController {
         $entityManager->persist($book);
         $entityManager->flush();
 
-        return $this->render('book/add.html.twig');
+        $id = $book->getCategory()->getId();
+
+        return $this->redirect("/category-book/$id");
+
+        //return $this->render('book/add.html.twig');
     }
 
     /**
@@ -134,6 +138,10 @@ class BookController extends AbstractController {
         $entityManager->remove($book);
         $entityManager->flush();
 
-        return $this->render('book/delete.html.twig');
+        $id = $book->getCategory()->getId();
+
+        return $this->redirect("/category-book/$id");
+
+        //return $this->render('book/delete.html.twig');
     }
 }

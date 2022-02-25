@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nom du livre !!!{% endblock %}
+{% block title %}{{ book.name |title }}{% endblock %}
 
 {% block body %}
     {{ parent() }}
@@ -11,7 +11,7 @@
             <img class="width_100" src="{{ book.picture }}" alt="{{ book.name }}">
             </div>
             <div class="width_70 containerInfoBook">
-                <h2 class="titleBook">{{ book.name }}</h2>
+                <h2 class="titleBook">{{ book.name |title }}</h2>
                 <div class="marg_30 flexRow">
                     <div class="marg_30_rl">
                         <a class="update" href="/book/update/{{ book.id }}"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -20,7 +20,7 @@
                         <a class="delete" href="/book/delete/{{ book.id }}"><i class="fa-solid fa-delete-left"></i></a>
                     </div>
                 </div>
-                <p class="grey"><span class="blue">Auteur : </span> {{ book.author }}</p>
+                <p class="grey"><span class="blue">Auteur : </span> {{ book.author |upper }}</p>
                 <p class="grey"><span class="blue">Parution : </span> {{ book.date }}</p>
                 <p class="grey"><span class="blue">Catégorie : </span>{{ book.category.name }}</p>
                 <p class="grey"><span class="blue">Résumer : </span> {{ book.description }}</p>
