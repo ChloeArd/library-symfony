@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoryController!{% endblock %}
+{% block title %}{{ categorys.0.shelf.name}}{% endblock %}
 
 {% block body %}
     {{ parent() }}
 
     <main class="width_80">
+        <h1 class="center">{{ categorys.0.shelf.name}}</h1>
         <a class="add" href="/category/add">Ajouter une catégorie</a>
         <div class="marg_30 container">
             {% for category in categorys %}

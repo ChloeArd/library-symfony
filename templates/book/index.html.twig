@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tous les livres de la catégorie ....{% endblock %}
+{% block title %}{{ books.0.category.name}}{% endblock %}
 
 {% block body %}
     {{ parent() }}
 
     <main class="width_80">
+        <h1 class="center">{{ books.0.category.name}}</h1>
         <a class="add" href="/book/add">Ajouter un livre</a>
         <div class="marg_30 flexRow center_flex2">
             {% for book in books %}
