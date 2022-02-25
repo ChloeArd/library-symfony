@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bi Bli Au Tek{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+        <main class="width_80">
+            <a class="add" href="/shelf/add">Ajouter une étagère</a>
+            <div class="marg_30">
+                {% for shelf in shelfs %}
+                    <a href="/borrower-category/{{ shelf.id }}" class="shelf ">
+                        <div class="lineVertical"></div>
+                        <div class="lineVertical"></div>
+                        <p>{{ shelf.name }}</p>
+                        <div class="lineVertical"></div>
+                        <div class="lineVertical"></div>
+                    </a>
+                    <div class="marg_30 flexRow">
+                        <div class="marg_30_rl">
+                            <a class="update" href="/shelf/update/{{ shelf.id }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        </div>
+                        <div class="marg_30_rl">
+                            <a class="delete" href="/shelf/delete/{{ shelf.id }}"><i class="fa-solid fa-delete-left"></i></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </main>
+
+{% endblock %}

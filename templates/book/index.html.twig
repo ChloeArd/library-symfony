@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les livres de la catégorie ....{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    {{ dump(books) }}
+    <main class="width_80">
+        <a class="add" href="/book/add">Ajouter un livre</a>
+        <div class="marg_30 flexRow">
+            {% for book in books %}
+                <div class="containerBooks wrap">
+                    <a href="/book/{{ book.id }}" class="center_flex">
+                        <img class="width_50" src="{{ book.picture }}" alt="{{ book.name }}">
+                        <p class="grey center">{{ book.name }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </main>
+{% endblock %}

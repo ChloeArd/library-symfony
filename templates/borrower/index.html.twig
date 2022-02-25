@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{borrower.firstname}} {{ borrower.lastname }}{% endblock %}
+
+{% block body %}
+    {{ dump(borrower) }}
+{% endblock %}
