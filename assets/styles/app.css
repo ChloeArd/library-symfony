@@ -1,3 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    font-size: 62.5%;
+}
+
 body {
-    background-color: lightgray;
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    font-size: 20px;
+    color: black;
+    width: 100%;
+    height: 100%;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+header{
+    width: 100%;
+    height: 80px;
+    background-color: #000000;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.shelf {
+    background-color: #eeeded;
+    height: 100px;
+    width: 100%;
+    border: 1px solid #989797;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: #383838;
+}
+
+.marg_30 {
+    margin: 30px 0 30px 0;
+}
+
+.width_80 {
+    width: 80%;
+    margin: auto;
+}
+
+.shelf:hover {
+    background-color: #83a9d9;
+}
+
+.lineVertical {
+    border-left: 2px solid #989797;
+    height: 100px;
+    margin: 0 10% 0 10%;
+}
+
+.add, .update, .delete {
+    background-color: #87bd87;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+}
+
+.add:hover {
+    background-color: #638a63;
+}
+
+.update {
+    background-color: #c9c18c;
+}
+
+.update:hover {
+    background-color: #8f8963;
+}
+
+.delete {
+    background-color: #bb817f;
+}
+
+.delete:hover {
+    background-color: #795453;
+}
+
+.update, .delete {
+    font-size: 13px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.marg_30_rl {
+    margin: 0 30px 0 30px;
+}
+
+.container {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px;
+}
+
+.category_color {
+    background-color: #69a7d4;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.category_color:hover {
+    background-color: #497493;
+}
+
+.category_color > a {
+    color: white;
+}
+
+.containerBooks {
+    width: 30%;
+}
+
+.center_flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.width_50 {
+    width: 50%;
+}
+
+.grey {
+    color: gray;
+    padding: 10px;
+}
+
+.center {
+    text-align: center;
 }
