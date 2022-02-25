@@ -3,5 +3,38 @@
 {% block title %}Nom du livre !!!{% endblock %}
 
 {% block body %}
-    {{dump(book)}}
+    {{ parent() }}
+
+    <main class="width_80">
+        <div class="marg_30 flexRow">
+            <div class="width_30">
+            <img class="width_100" src="{{ book.picture }}" alt="{{ book.name }}">
+            </div>
+            <div class="width_70 containerInfoBook">
+                <h2 class="titleBook">{{ book.name }}</h2>
+                <div class="marg_30 flexRow">
+                    <div class="marg_30_rl">
+                        <a class="update" href="/book/update/{{ book.id }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    </div>
+                    <div class="marg_30_rl">
+                        <a class="delete" href="/book/delete/{{ book.id }}"><i class="fa-solid fa-delete-left"></i></a>
+                    </div>
+                </div>
+                <p class="grey"><span class="blue">Auteur : </span> {{ book.author }}</p>
+                <p class="grey"><span class="blue">Parution : </span> {{ book.date }}</p>
+                <p class="grey"><span class="blue">Catégorie : </span>{{ book.category.name }}</p>
+                <p class="grey"><span class="blue">Résumer : </span> {{ book.description }}</p>
+                {% if book.borrower is null %}
+                    <div class="marg_30 center_flex">
+                        <a class="button_borrower" href="/book/update-borrower/{{ book.id }}">Emprunter</a>
+                    </div>
+                {% else %}
+                    <div class="marg_30 center_flex">
+                        <a class="button_borrower" href="/book/update-borrower-delete/{{ book.id }}">Remettre</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </main>
 {% endblock %}

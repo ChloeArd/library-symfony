@@ -27,6 +27,33 @@ class BookController extends AbstractController {
         return $this->render('book/index.html.twig', ["books" => $books]);
     }
 
+    /** add a book
+     * @param EntityManagerInterface $entityManager
+     * @param BorrowerRepository $borrowerRepository
+     * @param CategoryRepository $categoryRepository
+     * @return Response
+     */
+    #[Route('/book/add', name: 'book_add')]
+    public function add(EntityManagerInterface $entityManager, BorrowerRepository $borrowerRepository, CategoryRepository $categoryRepository): Response {
+
+        $book = new Book();
+        $borrower = $borrowerRepository->find(1);
+        $category = $categoryRepository->find(6);
+        $book
+            ->setName("Rendez moi mes poux")
+            ->setPicture("https://pim.rue-des-livres.com/a9/h7/e6/9782075164863_600x799.jpg")
+            ->setAuthor("PEF")
+            ->setDate("2022")
+            ->setDescription("Un jour, Mathieu sent que sa tête le démange. Et, en se grattant très fort, il découvre qu'il a des poux... Une formule magique trouvée par hasard lui permet de les apprivoiser et d'en faire ses amis. Heureux, Mathieu coule des jours paisibles avec ses poux, jusqu'au jour où sa mère découvre les intrus...")
+            ->setBorrower(null) // person who borrowed the book
+            ->setCategory($category);
+
+        $entityManager->persist($book);
+        $entityManager->flush();
+
+        return $this->render('book/add.html.twig');
+    }
+
     /**
      * display one book
      * @param int $idBook
@@ -39,33 +66,6 @@ class BookController extends AbstractController {
         $book = $repository->find($idBook);
 
         return $this->render('book/oneBook.html.twig', ["book" => $book]);
-    }
-
-    /** add a book
-     * @param EntityManagerInterface $entityManager
-     * @param BorrowerRepository $borrowerRepository
-     * @param CategoryRepository $categoryRepository
-     * @return Response
-     */
-    #[Route('/book/add', name: 'book_add')]
-    public function add(EntityManagerInterface $entityManager, BorrowerRepository $borrowerRepository, CategoryRepository $categoryRepository): Response {
-
-        $book = new Book();
-        $borrower = $borrowerRepository->find(2);
-        $category = $categoryRepository->find(6);
-        $book
-            ->setName("Le petit prince")
-            ->setPicture("https://cdn.cultura.com/cdn-cgi/image/width=1280/media/pim/TITELIVE/10_9782070612758_1_75.jpg")
-            ->setAuthor("Antoine de Saint-Exupéry")
-            ->setDate("1943")
-            ->setDescription("Le narrateur est un aviateur qui, à la suite d'une panne de moteur, a dû se poser en catastrophe dans le désert du Sahara et tente seul de réparer son avion (Antoine de Saint-Exupéry se met en scène lui-même dans son œuvre).")
-            ->setBorrower($borrower) // person who borrowed the book
-            ->setCategory($category);
-
-        $entityManager->persist($book);
-        $entityManager->flush();
-
-        return $this->render('book/add.html.twig');
     }
 
     /**
@@ -87,6 +87,39 @@ class BookController extends AbstractController {
         $entityManager->flush();
 
         return $this->render('book/update.html.twig');
+    }
+
+    /**
+     * add a borrower to book
+     * @param Book $book
+     * @param EntityManagerInterface $entityManager
+     * @param BorrowerRepository $borrowerRepository
+     * @return Response
+     */
+    #[Route('/book/update-borrower/{id}', name: 'book_update_borrower')]
+    public function updateBorrower(Book $book, EntityManagerInterface $entityManager, BorrowerRepository $borrowerRepository): Response {
+
+        $borrower = $borrowerRepository->find(1);
+
+        $book->setBorrower($borrower);
+
+        $entityManager->flush();
+
+        $id = $book->getId();
+
+        return $this->redirect("/book/$id");
+    }
+
+    #[Route('/book/update-borrower-delete/{id}', name: 'book_update_borrower_delete')]
+    public function updateBorrowerDelete(Book $book, EntityManagerInterface $entityManager): Response {
+
+        $book->setBorrower(null);
+
+        $entityManager->flush();
+
+        $id = $book->getId();
+
+        return $this->redirect("/book/$id");
     }
 
     /**

@@ -5,12 +5,11 @@
 {% block body %}
     {{ parent() }}
 
-    {{ dump(books) }}
     <main class="width_80">
         <a class="add" href="/book/add">Ajouter un livre</a>
-        <div class="marg_30 flexRow">
+        <div class="marg_30 flexRow center_flex2">
             {% for book in books %}
-                <div class="containerBooks wrap">
+                <div class="containerBooks wrap center_flex">
                     <a href="/book/{{ book.id }}" class="center_flex">
                         <img class="width_50" src="{{ book.picture }}" alt="{{ book.name }}">
                         <p class="grey center">{{ book.name }}</p>
