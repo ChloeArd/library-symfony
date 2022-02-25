@@ -219,3 +219,7 @@ header > div > a:hover {
 .text_r {
     text-align: right;
 }
+
+.white {
+    color: white;
+}
