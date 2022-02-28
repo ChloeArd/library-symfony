@@ -3,23 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Borrower;
+use App\Form\BorrowerType;
 use App\Repository\BorrowerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BorrowerController extends AbstractController {
-
-    /**
-     * find one borrower
-     * @return Response
-     */
-    #[Route('/borrower/{id}', name: 'borrower')]
-    public function index($id, BorrowerRepository $repository): Response {
-        $borrower = $repository->find($id);
-        return $this->render('borrower/index.html.twig', ["borrower" => $borrower]);
-    }
 
     /**
      * add a borrower
@@ -27,23 +19,32 @@ class BorrowerController extends AbstractController {
      * @return Response
      */
     #[Route('/borrower/add', name: 'borrower_add')]
-    public function add(EntityManagerInterface $entityManager): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager): Response {
 
         $borrower = new Borrower();
-        $borrower
-            ->setFirstname("Chloé")
-            ->setLastname("Ard")
-            ->setEmail("chloe.ard@gmail.com")
-            ->setPassword("1234!");
+        $form = $this->createForm(BorrowerType::class, $borrower);
 
-        $entityManager->persist($borrower);
-        $entityManager->flush();
+        $form->handleRequest($request);
 
-        $id = $borrower->getId();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($borrower);
+            $entityManager->flush();
+            $this->addFlash("success", "Votre compte a été créé avec succès !");
+            $id = $borrower->getId();
+            return $this->redirect("/borrower/$id");
+        }
 
-        return $this->redirect("/borrower/$id");
+        return $this->render('borrower/add.html.twig', ['form' => $form->createView()]);
+    }
 
-        //return $this->render('borrower/add.html.twig');
+    /**
+     * find one borrower
+     * @return Response
+     */
+    #[Route('/borrower/{id}', name: 'borrower_list')]
+    public function index(int $id, BorrowerRepository $repository): Response {
+        $borrower = $repository->find($id);
+        return $this->render('borrower/index.html.twig', ["borrower" => $borrower]);
     }
 
     /**
@@ -53,20 +54,19 @@ class BorrowerController extends AbstractController {
      * @return Response
      */
     #[Route('/borrower/update/{id}', name: 'borrower_update')]
-    public function update(Borrower $borrower, EntityManagerInterface $entityManager): Response {
-        $borrower
-            ->setFirstname("user")
-            ->setLastname("name")
-            ->setEmail("user@mail.com")
-            ->setPassword("1234!");
+    public function update(Borrower $borrower, Request $request, EntityManagerInterface $entityManager): Response {
 
-        $entityManager->flush();
+        $form = $this->createForm(BorrowerType::class, $borrower);
+        $form->handleRequest($request);
 
-        $id = $borrower->getId();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash("success", "Votre compte a été modifié avec succès ! !");
+            $id = $borrower->getId();
+            return $this->redirect("/borrower/$id");
+        }
 
-        return $this->redirect("/borrower/$id");
-
-        //return $this->render('borrower/update.html.twig');
+        return $this->render('borrower/update.html.twig', ["form" => $form->createView()]);
     }
 
     /**
@@ -86,5 +86,4 @@ class BorrowerController extends AbstractController {
 
         //return $this->render('borrower/delete.html.twig');
     }
-
 }

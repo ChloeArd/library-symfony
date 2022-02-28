@@ -214,6 +214,11 @@ header > div > a {
 
 header > div > a:hover {
     text-decoration: underline;
+    color: inherit;
+}
+
+h1 > a:hover, a:hover {
+    color: inherit;
 }
 
 .text_r {
