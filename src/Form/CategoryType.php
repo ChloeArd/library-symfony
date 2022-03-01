@@ -22,7 +22,7 @@ class CategoryType extends AbstractType
                 "label" => "Choissiez une étagère",
                 "class" => Shelf::class,
                 "choice_label" => "name",
-                "placeholder" => " ",
+                "placeholder" => "",
                 "constraints" => [
                     new NotBlank([
                         "message" => "Veuillez choisir une étagère"

@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Shelf;
+use App\Form\CategoryType;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
-use App\Repository\ShelfRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,17 +33,22 @@ class CategoryController extends AbstractController {
      * @return Response
      */
     #[Route('/category/add', name: 'category_add')]
-    public function add(EntityManagerInterface $entityManager, ShelfRepository $repository): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager): Response {
 
         $category = new Category();
-        $s = $repository->find(4);
-        $category->setName("Religion & spiritualité");
-        $category->setShelf($s);
+        $form = $this->createForm(CategoryType::class, $category);
 
-        $entityManager->persist($category);
-        $entityManager->flush();
+        $form->handleRequest($request);
 
-        return $this->render('category/add.html.twig');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($category);
+            $entityManager->flush();
+            $this->addFlash("success", "La catégorie a été créé avec succès !");
+            $id = $category->getShelf()->getId();
+            return $this->redirect("/borrower-category/$id");
+        }
+
+        return $this->render('category/add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -53,13 +58,19 @@ class CategoryController extends AbstractController {
      * @return Response
      */
     #[Route('/category/update/{id}', name: 'category_update')]
-    public function update(Category $category, EntityManagerInterface $entityManager): Response {
+    public function update(Category $category, Request $request, EntityManagerInterface $entityManager): Response {
 
-        $category->setName("Sport");
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
 
-        $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash("success", "La catégorie a été modifié avec succès ! !");
+            $id = $category->getShelf()->getId();
+            return $this->redirect("/borrower-category/$id");
+        }
 
-        return $this->render('category/update.html.twig');
+        return $this->render('category/update.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -70,10 +81,12 @@ class CategoryController extends AbstractController {
      * @return Response
      */
     #[Route('/category/delete/{id}', name: 'category_delete')]
-    public function delete(Category $category, EntityManagerInterface $entityManager): Response {
-        $entityManager->remove($category);
-        $entityManager->flush();
+    public function delete(Category $category, EntityManagerInterface $entityManager, CategoryRepository $repository): Response {
 
-        return $this->render('category/delete.html.twig');
+        $repository->delete($category->getId());
+
+        $id = $category->getShelf()->getId();
+
+        return $this->redirect("/borrower-category/$id");
     }
 }

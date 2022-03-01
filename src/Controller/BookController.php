@@ -7,6 +7,7 @@ use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\BorrowerRepository;
 use App\Repository\CategoryRepository;
+use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,7 +83,7 @@ class BookController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            $this->addFlash("success", "Votre livre a été modifié avec succès ! !");
+            $this->addFlash("success", "Le livre a été modifié avec succès ! !");
             $id = $book->getId();
             return $this->redirect("/book/$id");
         }
@@ -102,7 +103,13 @@ class BookController extends AbstractController {
 
         $borrower = $borrowerRepository->find(1);
 
+        $date = new \DateTime();
+
         $book->setBorrower($borrower);
+        $book->setReserved($date);
+        $date = date_create();
+        date_add($date, date_interval_create_from_date_string('10 days'));
+        $book->setRecovery($date);
 
         $entityManager->flush();
 
@@ -115,6 +122,8 @@ class BookController extends AbstractController {
     public function updateBorrowerDelete(Book $book, EntityManagerInterface $entityManager): Response {
 
         $book->setBorrower(null);
+        $book->setRecovery(null);
+        $book->setReserved(null);
 
         $entityManager->flush();
 
@@ -131,9 +140,9 @@ class BookController extends AbstractController {
      * @return Response
      */
     #[Route('/book/delete/{id}', name: 'book_delete')]
-    public function delete(Book $book, EntityManagerInterface $entityManager): Response {
-        $entityManager->remove($book);
-        $entityManager->flush();
+    public function delete(Book $book, EntityManagerInterface $entityManager, BookRepository $repository): Response {
+
+        $repository->delete($book->getId());
 
         $id = $book->getCategory()->getId();
 

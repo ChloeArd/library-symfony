@@ -41,34 +41,37 @@ class BookType extends AbstractType
             ])
             ->add('reserved', DateType::class, [
                 "label" => "Réservation",
-                "placeholder" => " ",
+                "required" => false,
+                "placeholder" => "",
+                "empty_data" => null,
                 "days" => range(1, 31),
                 "months" => range(1, 12),
                 "years" => range((int)$years2->format("Y"), (int)$years2->modify("+ 1years")->format("Y"))
             ])
             ->add('recovery', DateType::class, [
-                "label" => "Réservation",
-                "placeholder" => " ",
+                "label" => "Récupération",
+                "required" => false,
+                "placeholder" => "",
+                "empty_data" => null,
                 "days" => range(1, 31),
                 "months" => range(1, 12),
                 "years" => range((int)$years3->format("Y"), (int)$years3->modify("+ 1years")->format("Y"))
             ])
             ->add('borrower', EntityType::class, [
                 "label" => "Choissiez un emprunteur",
+                "required" => false,
+                "empty_data" => null,
                 "class" => Borrower::class,
-                "choice_label" => "lastname",
-                "placeholder" => " ",
-                "constraints" => [
-                  new NotBlank([
-                      "message" => "Veuillez choisir un emprunteur"
-                  ])
-                ]
+                "choice_label" => function(Borrower $borrower) {
+                    return $borrower->getFirstname() . " " . $borrower->getLastname();
+                },
+                "placeholder" => "",
             ])
             ->add('category', EntityType::class, [
                 "label" => "Choissiez une catégorie",
                 "class" => Category::class,
                 "choice_label" => "name",
-                "placeholder" => " ",
+                "placeholder" => "",
                 "constraints" => [
                     new NotBlank([
                         "message" => "Veuillez choisir une catégorie"
@@ -76,7 +79,6 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, ["label" => "Enregistrer"] )
-
         ;
     }
 

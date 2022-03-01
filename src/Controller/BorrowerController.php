@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Borrower;
 use App\Form\BorrowerType;
+use App\Repository\BookRepository;
 use App\Repository\BorrowerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,8 +31,7 @@ class BorrowerController extends AbstractController {
             $entityManager->persist($borrower);
             $entityManager->flush();
             $this->addFlash("success", "Votre compte a été créé avec succès !");
-            $id = $borrower->getId();
-            return $this->redirect("/borrower/$id");
+            return $this->redirect("/borrower");
         }
 
         return $this->render('borrower/add.html.twig', ['form' => $form->createView()]);
@@ -76,13 +76,21 @@ class BorrowerController extends AbstractController {
      * @return Response
      */
     #[Route('/borrower/delete/{id}', name: 'borrower_delete')]
-    public function delete(Borrower $borrower, EntityManagerInterface $entityManager): Response {
+    public function delete(Borrower $borrower, EntityManagerInterface $entityManager, BookRepository $repository): Response {
         $entityManager->remove($borrower);
         $entityManager->flush();
 
         $id = $borrower->getId();
 
-        return $this->redirect("/borrower/$id");
+        $book = $repository->findBy(['borrower' => $id]);
+
+        foreach ($book as $b) {
+            $id2 = $b->getId();
+
+            return $this->redirect("/book/update-borrower-delete/$id2");
+        }
+
+        return $this->redirect("/");
 
         //return $this->render('borrower/delete.html.twig');
     }

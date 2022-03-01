@@ -19,6 +19,18 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function delete(int $id) {
+        $db = $this->getEntityManager()->getConnection();
+
+        $query = "DELETE FROM book WHERE categoryID = $id";
+        $stmt = $db->prepare($query);
+        $stmt->executeQuery();
+
+        $query = "DELETE FROM category WHERE id = $id";
+        $stmt = $db->prepare($query);
+        return $stmt->executeQuery();
+    }
+
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */
