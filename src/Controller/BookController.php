@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\BorrowerRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,28 +36,22 @@ class BookController extends AbstractController {
      * @return Response
      */
     #[Route('/book/add', name: 'book_add')]
-    public function add(EntityManagerInterface $entityManager, BorrowerRepository $borrowerRepository, CategoryRepository $categoryRepository): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager): Response {
 
         $book = new Book();
-        $borrower = $borrowerRepository->find(1);
-        $category = $categoryRepository->find(6);
-        $book
-            ->setName("Rendez moi mes poux")
-            ->setPicture("https://pim.rue-des-livres.com/a9/h7/e6/9782075164863_600x799.jpg")
-            ->setAuthor("PEF")
-            ->setDate("2022")
-            ->setDescription("Un jour, Mathieu sent que sa tête le démange. Et, en se grattant très fort, il découvre qu'il a des poux... Une formule magique trouvée par hasard lui permet de les apprivoiser et d'en faire ses amis. Heureux, Mathieu coule des jours paisibles avec ses poux, jusqu'au jour où sa mère découvre les intrus...")
-            ->setBorrower(null) // person who borrowed the book
-            ->setCategory($category);
+        $form = $this->createForm(BookType::class, $book);
 
-        $entityManager->persist($book);
-        $entityManager->flush();
+        $form->handleRequest($request);
 
-        $id = $book->getCategory()->getId();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($book);
+            $entityManager->flush();
+            $this->addFlash("success", "Le livre a été créé avec succès !");
+            $id = $book->getCategory()->getId();
+            return $this->redirect("/category-book/$id");
+        }
 
-        return $this->redirect("/category-book/$id");
-
-        //return $this->render('book/add.html.twig');
+        return $this->render('book/add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -79,18 +75,19 @@ class BookController extends AbstractController {
      * @return Response
      */
     #[Route('/book/update/{id}', name: 'book_update')]
-    public function update(Book $book, EntityManagerInterface $entityManager): Response {
+    public function update(Book $book, Request $request, EntityManagerInterface $entityManager): Response {
 
-        $book
-            ->setName("test")
-            ->setPicture("https://via.placeholder.com/200x100")
-            ->setAuthor("Author")
-            ->setDate("date")
-            ->setDescription("Un résumer du livre");
+        $form = $this->createForm(BookType::class, $book);
+        $form->handleRequest($request);
 
-        $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash("success", "Votre livre a été modifié avec succès ! !");
+            $id = $book->getId();
+            return $this->redirect("/book/$id");
+        }
 
-        return $this->render('book/update.html.twig');
+        return $this->render('book/update.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -141,7 +138,5 @@ class BookController extends AbstractController {
         $id = $book->getCategory()->getId();
 
         return $this->redirect("/category-book/$id");
-
-        //return $this->render('book/delete.html.twig');
     }
 }

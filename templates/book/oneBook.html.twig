@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <p class="grey"><span class="blue">Auteur : </span> {{ book.author |upper }}</p>
-                <p class="grey"><span class="blue">Parution : </span> {{ book.date }}</p>
+                <p class="grey"><span class="blue">Parution : </span> {{ book.date|date("m/d/Y") }}</p>
                 <p class="grey"><span class="blue">Catégorie : </span>{{ book.category.name }}</p>
                 <p class="grey"><span class="blue">Résumer : </span> {{ book.description }}</p>
                 {% if book.borrower is null %}

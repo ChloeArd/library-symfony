@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\DBAL\Types\DateType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -22,7 +25,7 @@ class Book
     #[ORM\Column(type: 'string', length: 255)]
     private $author;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'date')]
     private $date;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -31,6 +34,12 @@ class Book
     #[ORM\ManyToOne(targetEntity: Borrower::class, inversedBy: 'book', cascade: ['remove'])]
     #[ORM\JoinColumn(name: "borrowerID", referencedColumnName: "id", onDelete: "CASCADE")]
     private $borrower;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $reserved;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $recovery;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'book', cascade: ['remove'])]
     #[ORM\JoinColumn(name: "categoryID", referencedColumnName: "id", onDelete: "CASCADE")]
@@ -49,7 +58,6 @@ class Book
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -61,7 +69,6 @@ class Book
     public function setPicture(?string $picture): self
     {
         $this->picture = $picture;
-
         return $this;
     }
 
@@ -73,19 +80,17 @@ class Book
     public function setAuthor(string $author): self
     {
         $this->author = $author;
-
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
 
-    public function setDate(string $date): self
+    public function setDate(?\DateTime $date): self
     {
         $this->date = $date;
-
         return $this;
     }
 
@@ -97,7 +102,6 @@ class Book
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -109,7 +113,40 @@ class Book
     public function setBorrower(?Borrower $borrower): self
     {
         $this->borrower = $borrower;
+        return $this;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getReserved() : ?\DateTime
+    {
+        return $this->reserved;
+    }
+
+    /**
+     * @param mixed $reserved
+     */
+    public function setReserved(?\DateTime $reserved): self
+    {
+        $this->reserved = $reserved;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecovery(): ?\DateTime
+    {
+        return $this->recovery;
+    }
+
+    /**
+     * @param mixed $recovery
+     */
+    public function setRecovery(?\DateTime $recovery): self
+    {
+        $this->recovery = $recovery;
         return $this;
     }
 
@@ -121,7 +158,6 @@ class Book
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-
         return $this;
     }
 }
