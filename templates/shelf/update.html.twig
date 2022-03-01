@@ -3,5 +3,13 @@
 {% block title %}Modifier une étagère{% endblock %}
 
 {% block body %}
+    {{ parent() }}
+    <main>
+        <h1 class="titleBook center">Modifier une étagère</h1>
+        <div class="container-fluid mt-4 w-50">
+            {% form_theme form 'bootstrap_5_layout.html.twig' %}
+            {{ form(form) }}
+        </div>
 
+    </main>
 {% endblock %}

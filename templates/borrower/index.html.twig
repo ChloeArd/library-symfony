@@ -1,22 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ borrower.firstname }} {{ borrower.lastname }}{% endblock %}
+{% block title %}Les emprunteur{% endblock %}
 
 {% block body %}
     {{ parent() }}
 
     <main class="">
-        <h1 class="titleBook center">{{ borrower.firstname }} {{ borrower.lastname }}</h1>
-        <div class="container center_flex width_50">
-            <p class="grey"><span class="blue">Email : </span>{{ borrower.email }}</p>
-            <div class="marg_30 flexColumn">
-                <div class="marg_30">
-                    <a class="update" href="/borrower/update/{{ borrower.id }}">Modifier mon compte<i class="fa-solid fa-pen-to-square marg_30_rl"></i></a>
-                </div>
-                <div class="marg_30">
-                    <a class="delete" href="/borrower/delete/{{ borrower.id }}">Supprimer mon compte<i class="fa-solid fa-delete-left marg_30_rl"></i></a>
+        {% for borrower in borrowers %}
+            <h1 class="titleBook center marg_30">{{ borrower.firstname }} {{ borrower.lastname }}</h1>
+            <div class="container center_flex width_50">
+                <p class="grey"><span class="blue">Email : </span>{{ borrower.email }}</p>
+                <div class="marg_30 flexColumn">
+                    <div class="marg_30">
+                        <a class="update" href="/borrower/update/{{ borrower.id }}">Modifier<i class="fa-solid fa-pen-to-square marg_30_rl"></i></a>
+                    </div>
+                    <div class="marg_30">
+                        <a class="delete" href="/borrower/delete/{{ borrower.id }}">Supprimer<i class="fa-solid fa-delete-left marg_30_rl"></i></a>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </main>
 {% endblock %}

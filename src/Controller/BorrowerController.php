@@ -41,10 +41,10 @@ class BorrowerController extends AbstractController {
      * find one borrower
      * @return Response
      */
-    #[Route('/borrower/{id}', name: 'borrower_list')]
-    public function index(int $id, BorrowerRepository $repository): Response {
-        $borrower = $repository->find($id);
-        return $this->render('borrower/index.html.twig', ["borrower" => $borrower]);
+    #[Route('/borrower', name: 'borrower_list')]
+    public function index(BorrowerRepository $repository): Response {
+        $borrowers = $repository->findAll();
+        return $this->render('borrower/index.html.twig', ["borrowers" => $borrowers]);
     }
 
     /**

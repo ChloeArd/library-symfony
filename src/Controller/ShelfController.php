@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Shelf;
+use App\Form\ShelfType;
 use App\Repository\ShelfRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,17 +33,22 @@ class ShelfController extends AbstractController {
      * @return Response
      */
     #[Route('/shelf/add', name: 'shelf_add')]
-    public function add(EntityManagerInterface $entityManager): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager): Response {
 
         $shelf = new Shelf();
-        $shelf->setName("Etagère 5");
+        $form = $this->createForm(ShelfType::class, $shelf);
 
-        $entityManager->persist($shelf);
-        $entityManager->flush();
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute("shelf");
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($shelf);
+            $entityManager->flush();
+            $this->addFlash("success", "L'étagère a été créé avec succès !");
+            $id = $shelf->getId();
+            return $this->redirectToRoute("shelf");
+        }
 
-        //return $this->render('shelf/add.html.twig');
+        return $this->render('shelf/add.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -51,15 +58,18 @@ class ShelfController extends AbstractController {
      * @return Response
      */
     #[Route('/shelf/update/{id}', name: 'shelf_update')]
-    public function update(Shelf $shelf, EntityManagerInterface $entityManager): Response {
+    public function update(Shelf $shelf, Request $request, EntityManagerInterface $entityManager): Response {
 
-        $shelf->setName("Etagère test");
+        $form = $this->createForm(ShelfType::class, $shelf);
+        $form->handleRequest($request);
 
-        $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash("success", "L'étagère a été modifié avec succès ! !");
+            return $this->redirectToRoute("shelf");
+        }
 
-        return $this->redirectToRoute("shelf");
-
-        //return $this->render('shelf/update.html.twig');
+        return $this->render('shelf/update.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -69,13 +79,11 @@ class ShelfController extends AbstractController {
      * @return Response
      */
     #[Route('/shelf/delete/{id}', name: 'shelf_delete')]
-    public function delete(Shelf $shelf, ShelfRepository $repository, EntityManagerInterface $entityManager): Response {
+    public function delete(Shelf $shelf, EntityManagerInterface $entityManager): Response {
         $entityManager->remove($shelf);
         $entityManager->flush();
 
         return $this->redirectToRoute("shelf");
-
-        //return $this->render('borrower/delete.html.twig');
     }
 
 }
