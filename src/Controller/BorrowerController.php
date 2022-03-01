@@ -71,6 +71,7 @@ class BorrowerController extends AbstractController {
 
     /**
      * delete a borrower
+     * set the borrower to null, reserved and recovery to the book when the user is deleted to make it available
      * @param Borrower $borrower
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -84,6 +85,7 @@ class BorrowerController extends AbstractController {
 
         $book = $repository->findBy(['borrower' => $id]);
 
+        // mets a null
         foreach ($book as $b) {
             $id2 = $b->getId();
 
@@ -91,7 +93,5 @@ class BorrowerController extends AbstractController {
         }
 
         return $this->redirect("/");
-
-        //return $this->render('borrower/delete.html.twig');
     }
 }
