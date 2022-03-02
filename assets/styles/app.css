@@ -228,3 +228,7 @@ h1 > a:hover, a:hover {
 .white {
     color: white;
 }
+
+#titleLibrary {
+    font-size: 50px;
+}
