@@ -28,7 +28,7 @@ class BookType extends AbstractType
             ->add('picture', UrlType::class, ['label' => "Photo de la couverture"])
             ->add('author', TextType::class, ["label" => "Auteur(s)"])
             ->add('date', DateType::class, [
-                "label" => "Année de sortie",
+                "label" => "Date de sortie",
                 "placeholder" => " ",
                 "years" => range((int)$years->format("Y"), (int)$years->modify("- 200years")->format("Y")),
                 ])

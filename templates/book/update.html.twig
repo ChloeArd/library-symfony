@@ -8,8 +8,30 @@
         <h1 class="titleBook center">Modifier un livre</h1>
         <div class="container-fluid mt-4 w-50">
             {% form_theme form 'bootstrap_5_layout.html.twig' %}
-            {{ form(form) }}
+            {{ form_start(form) }}
+            <div>
+                {{ form_row(form.name) }}
+            </div>
+            <div>
+                {{ form_row(form.picture) }}
+            </div>
+            <div>
+                {{ form_row(form.author) }}
+            </div>
+            <div>
+                {{ form_row(form.date) }}
+            </div>
+            <div>
+                {{ form_row(form.description) }}
+            </div>
+            <div>
+                {{ form_row(form.category) }}
+            </div>
+            {{ form_widget(form._token) }}
+            <div class="mb-3">
+                <input type="submit" value="Enregistrer" name="submit" class="btn-primary btn">
+            </div>
+            {{ form_end(form, {'render_rest': false}) }}
         </div>
-
     </main>
 {% endblock %}
