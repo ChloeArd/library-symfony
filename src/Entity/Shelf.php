@@ -6,6 +6,8 @@ use App\Repository\ShelfRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ShelfRepository::class)]
 class Shelf
@@ -16,9 +18,11 @@ class Shelf
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide !")]
     private $name;
 
     #[ORM\OneToMany(mappedBy: 'shelf', targetEntity: Category::class)]
+    #[Assert\NotBlank(message: "La catégorie ne peut pas être vide !")]
     private $category;
 
     public function __construct()

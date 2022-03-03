@@ -6,6 +6,8 @@ use App\Repository\BorrowerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: BorrowerRepository::class)]
 class Borrower
@@ -16,18 +18,25 @@ class Borrower
     private $id;
 
     #[ORM\Column(type: 'string', length: 20)]
+    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide !")]
     private $firstname;
 
     #[ORM\Column(type: 'string', length: 20)]
+    #[Assert\NotBlank(message: "Le nom de famille ne peut pas être vide !")]
     private $lastname;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "L'email' ne peut pas être vide !")]
+    #[Assert\Email(message: "L'adresse mail n'est pas au bon format !", mode: "html5")]
     private $email;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Le mot de passe ne peut pas être vide !")]
+    #[Assert\NotCompromisedPassword(message: "Le mot de passe est compromis, veuillez en choisir un autre !")]
     private $password;
 
     #[ORM\OneToMany(mappedBy: 'borrower', targetEntity: Book::class)]
+    #[Assert\NotBlank(message: "Le livre ne peut pas être vide !")]
     private $book;
 
     public function __construct()

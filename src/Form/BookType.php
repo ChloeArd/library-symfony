@@ -65,18 +65,13 @@ class BookType extends AbstractType
                 "choice_label" => function(Borrower $borrower) {
                     return $borrower->getFirstname() . " " . $borrower->getLastname();
                 },
-                "placeholder" => "",
+                "placeholder" => ""
             ])
             ->add('category', EntityType::class, [
                 "label" => "Choissiez une catégorie",
                 "class" => Category::class,
                 "choice_label" => "name",
-                "placeholder" => "",
-                "constraints" => [
-                    new NotBlank([
-                        "message" => "Veuillez choisir une catégorie"
-                    ])
-                ]
+                "placeholder" => ""
             ])
             ->add('submit', SubmitType::class, ["label" => "Enregistrer"] )
         ;
