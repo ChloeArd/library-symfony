@@ -23,7 +23,6 @@ class CategoryController extends AbstractController {
     public function index(int $id, CategoryRepository $repository): Response {
 
         $categorys = $repository->findBy(['shelf' => $id]);
-
         return $this->render('category/index.html.twig', ['categorys' => $categorys]);
     }
 
@@ -47,7 +46,6 @@ class CategoryController extends AbstractController {
             $id = $category->getShelf()->getId();
             return $this->redirect("/borrower-category/$id");
         }
-
         return $this->render('category/add.html.twig', ['form' => $form->createView()]);
     }
 
@@ -69,7 +67,6 @@ class CategoryController extends AbstractController {
             $id = $category->getShelf()->getId();
             return $this->redirect("/borrower-category/$id");
         }
-
         return $this->render('category/update.html.twig', ['form' => $form->createView()]);
     }
 
@@ -84,9 +81,7 @@ class CategoryController extends AbstractController {
     public function delete(Category $category, EntityManagerInterface $entityManager, CategoryRepository $repository): Response {
 
         $repository->delete($category->getId());
-
         $id = $category->getShelf()->getId();
-
         return $this->redirect("/borrower-category/$id");
     }
 }

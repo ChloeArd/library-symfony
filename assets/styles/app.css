@@ -36,15 +36,15 @@ header{
 }
 
 .shelf {
-    background-color: #eeeded;
+    background-color: #0a408f;
     height: 100px;
     width: 100%;
-    border: 1px solid #989797;
+    border: 1px solid black;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    color: #383838;
+    color: white;
 }
 
 .marg_30 {
@@ -61,7 +61,7 @@ header{
 }
 
 .lineVertical {
-    border-left: 2px solid #989797;
+    border-left: 2px solid black;
     height: 100px;
     margin: 0 10% 0 10%;
 }

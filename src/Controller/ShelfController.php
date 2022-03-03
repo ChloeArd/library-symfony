@@ -20,11 +20,9 @@ class ShelfController extends AbstractController {
      */
     #[Route('/', name: 'shelf')]
     public function index(ShelfRepository $repository): Response {
-        $shelfs = $repository->findAll();
 
-        return $this->render('shelf/index.html.twig', [
-            'shelfs' => $shelfs,
-        ]);
+        $shelfs = $repository->findAll();
+        return $this->render('shelf/index.html.twig', ['shelfs' => $shelfs,]);
     }
 
     /**
@@ -47,7 +45,6 @@ class ShelfController extends AbstractController {
             $id = $shelf->getId();
             return $this->redirectToRoute("shelf");
         }
-
         return $this->render('shelf/add.html.twig', ['form' => $form->createView()]);
     }
 
@@ -68,7 +65,6 @@ class ShelfController extends AbstractController {
             $this->addFlash("success", "L'étagère a été modifié avec succès ! !");
             return $this->redirectToRoute("shelf");
         }
-
         return $this->render('shelf/update.html.twig', ['form' => $form->createView()]);
     }
 
@@ -82,8 +78,6 @@ class ShelfController extends AbstractController {
     public function delete(Shelf $shelf, EntityManagerInterface $entityManager): Response {
         $entityManager->remove($shelf);
         $entityManager->flush();
-
         return $this->redirectToRoute("shelf");
     }
-
 }

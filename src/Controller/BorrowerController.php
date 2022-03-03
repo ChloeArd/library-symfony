@@ -33,7 +33,6 @@ class BorrowerController extends AbstractController {
             $this->addFlash("success", "Votre compte a été créé avec succès !");
             return $this->redirect("/borrower");
         }
-
         return $this->render('borrower/add.html.twig', ['form' => $form->createView()]);
     }
 
@@ -43,6 +42,7 @@ class BorrowerController extends AbstractController {
      */
     #[Route('/borrower', name: 'borrower_list')]
     public function index(BorrowerRepository $repository): Response {
+
         $borrowers = $repository->findAll();
         return $this->render('borrower/index.html.twig', ["borrowers" => $borrowers]);
     }
@@ -65,7 +65,6 @@ class BorrowerController extends AbstractController {
             $id = $borrower->getId();
             return $this->redirect("/borrower/$id");
         }
-
         return $this->render('borrower/update.html.twig', ["form" => $form->createView()]);
     }
 
@@ -85,13 +84,11 @@ class BorrowerController extends AbstractController {
 
         $book = $repository->findBy(['borrower' => $id]);
 
-        // mets a null
+        // put a null
         foreach ($book as $b) {
             $id2 = $b->getId();
-
             return $this->redirect("/book/update-borrower-delete/$id2");
         }
-
         return $this->redirect("/");
     }
 }

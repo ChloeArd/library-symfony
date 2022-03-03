@@ -26,7 +26,6 @@ class BookController extends AbstractController {
     public function index(int $idCategory, BookRepository $repository): Response {
 
         $books = $repository->findBy(['category' => $idCategory]);
-
         return $this->render('book/index.html.twig', ["books" => $books]);
     }
 
@@ -55,8 +54,6 @@ class BookController extends AbstractController {
                 return $this->redirect("/category-book/$id");
             }
         }
-
-
         return $this->render('book/add.html.twig', ['form' => $form->createView()]);
     }
 
@@ -70,7 +67,6 @@ class BookController extends AbstractController {
     public function oneBook(int $idBook, BookRepository $repository): Response {
 
         $book = $repository->find($idBook);
-
         return $this->render('book/oneBook.html.twig', ["book" => $book]);
     }
 
@@ -92,7 +88,6 @@ class BookController extends AbstractController {
             $id = $book->getId();
             return $this->redirect("/book/$id");
         }
-
         return $this->render('book/update.html.twig', ['form' => $form->createView()]);
     }
 
@@ -115,11 +110,9 @@ class BookController extends AbstractController {
         $date = date_create();
         date_add($date, date_interval_create_from_date_string('10 days'));
         $book->setRecovery($date);
-
         $entityManager->flush();
 
         $id = $book->getId();
-
         return $this->redirect("/book/$id");
     }
 
@@ -129,11 +122,9 @@ class BookController extends AbstractController {
         $book->setBorrower(null);
         $book->setRecovery(null);
         $book->setReserved(null);
-
         $entityManager->flush();
 
         $id = $book->getId();
-
         return $this->redirect("/book/$id");
     }
 
@@ -148,9 +139,7 @@ class BookController extends AbstractController {
     public function delete(Book $book, EntityManagerInterface $entityManager, BookRepository $repository): Response {
 
         $repository->delete($book->getId());
-
         $id = $book->getCategory()->getId();
-
         return $this->redirect("/category-book/$id");
     }
 }
