@@ -44,13 +44,18 @@ class BookController extends AbstractController {
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($book);
-            $entityManager->flush();
-            $this->addFlash("success", "Le livre a été créé avec succès !");
-            $id = $book->getCategory()->getId();
-            return $this->redirect("/category-book/$id");
+        $submittedToken = $request->request->get("csrf_token");
+
+        if ($this->isCsrfTokenValid("book-add", $submittedToken)) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($book);
+                $entityManager->flush();
+                $this->addFlash("success", "Le livre a été créé avec succès !");
+                $id = $book->getCategory()->getId();
+                return $this->redirect("/category-book/$id");
+            }
         }
+
 
         return $this->render('book/add.html.twig', ['form' => $form->createView()]);
     }

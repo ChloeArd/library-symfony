@@ -27,10 +27,11 @@
             <div>
                 {{ form_row(form.category) }}
             </div>
-            {{ form_widget(form._token) }}
             <div class="mb-3">
                 <input type="submit" value="Enregistrer" name="submit" class="btn-primary btn">
             </div>
+            {{ form_widget(form._token) }}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token("book-add") }}">
             {{ form_end(form, {'render_rest': false}) }}
         </div>
     </main>

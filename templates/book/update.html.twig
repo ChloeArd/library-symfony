@@ -27,10 +27,10 @@
             <div>
                 {{ form_row(form.category) }}
             </div>
-            {{ form_widget(form._token) }}
             <div class="mb-3">
                 <input type="submit" value="Enregistrer" name="submit" class="btn-primary btn">
             </div>
+            {{ form_widget(form._token) }}
             {{ form_end(form, {'render_rest': false}) }}
         </div>
     </main>
