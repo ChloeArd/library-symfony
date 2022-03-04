@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryController extends AbstractController {
 
@@ -32,7 +33,7 @@ class CategoryController extends AbstractController {
      * @return Response
      */
     #[Route('/category/add', name: 'category_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
 
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -42,7 +43,8 @@ class CategoryController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($category);
             $entityManager->flush();
-            $this->addFlash("success", "La catégorie a été créé avec succès !");
+            $message = $translator->trans('Category added successfully');
+            $this->addFlash("success", $message);
             $id = $category->getShelf()->getId();
             return $this->redirect("/borrower-category/$id");
         }
@@ -56,14 +58,15 @@ class CategoryController extends AbstractController {
      * @return Response
      */
     #[Route('/category/update/{id}', name: 'category_update')]
-    public function update(Category $category, Request $request, EntityManagerInterface $entityManager): Response {
+    public function update(Category $category, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
 
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            $this->addFlash("success", "La catégorie a été modifié avec succès ! !");
+            $message = $translator->trans('Category modified successfully');
+            $this->addFlash("success", $message);
             $id = $category->getShelf()->getId();
             return $this->redirect("/borrower-category/$id");
         }
@@ -78,10 +81,12 @@ class CategoryController extends AbstractController {
      * @return Response
      */
     #[Route('/category/delete/{id}', name: 'category_delete')]
-    public function delete(Category $category, EntityManagerInterface $entityManager, CategoryRepository $repository): Response {
+    public function delete(Category $category, EntityManagerInterface $entityManager, CategoryRepository $repository, TranslatorInterface $translator): Response {
 
         $repository->delete($category->getId());
         $id = $category->getShelf()->getId();
+        $message = $translator->trans('Category deleted successfully');
+        $this->addFlash("success", $message);
         return $this->redirect("/borrower-category/$id");
     }
 }

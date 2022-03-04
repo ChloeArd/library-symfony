@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BorrowerController extends AbstractController {
 
@@ -20,7 +21,7 @@ class BorrowerController extends AbstractController {
      * @return Response
      */
     #[Route('/borrower/add', name: 'borrower_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
 
         $borrower = new Borrower();
         $form = $this->createForm(BorrowerType::class, $borrower);
@@ -30,7 +31,8 @@ class BorrowerController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($borrower);
             $entityManager->flush();
-            $this->addFlash("success", "Votre compte a été créé avec succès !");
+            $message = $translator->trans('Account created successfully');
+            $this->addFlash("success", $message);
             return $this->redirect("/borrower");
         }
         return $this->render('borrower/add.html.twig', ['form' => $form->createView()]);
@@ -54,14 +56,15 @@ class BorrowerController extends AbstractController {
      * @return Response
      */
     #[Route('/borrower/update/{id}', name: 'borrower_update')]
-    public function update(Borrower $borrower, Request $request, EntityManagerInterface $entityManager): Response {
+    public function update(Borrower $borrower, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
 
         $form = $this->createForm(BorrowerType::class, $borrower);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            $this->addFlash("success", "Votre compte a été modifié avec succès ! !");
+            $message = $translator->trans('Account modified successfully');
+            $this->addFlash("success", $message);
             $id = $borrower->getId();
             return $this->redirect("/borrower/$id");
         }
@@ -76,13 +79,16 @@ class BorrowerController extends AbstractController {
      * @return Response
      */
     #[Route('/borrower/delete/{id}', name: 'borrower_delete')]
-    public function delete(Borrower $borrower, EntityManagerInterface $entityManager, BookRepository $repository): Response {
+    public function delete(Borrower $borrower, EntityManagerInterface $entityManager, BookRepository $repository, TranslatorInterface $translator): Response {
         $entityManager->remove($borrower);
         $entityManager->flush();
 
         $id = $borrower->getId();
 
         $book = $repository->findBy(['borrower' => $id]);
+
+        $message = $translator->trans('Account deleted successfully');
+        $this->addFlash("success", $message);
 
         // put a null
         foreach ($book as $b) {

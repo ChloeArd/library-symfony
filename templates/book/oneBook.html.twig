@@ -20,20 +20,20 @@
                         <a class="delete" href="/book/delete/{{ book.id }}"><i class="fa-solid fa-delete-left"></i></a>
                     </div>
                 </div>
-                <p class="grey"><span class="blue">Auteur : </span> {{ book.author |upper }}</p>
-                <p class="grey"><span class="blue">Parution : </span> {{ book.date|date("d/m/Y") }}</p>
-                <p class="grey"><span class="blue">Catégorie : </span>{{ book.category.name }}</p>
-                <p class="grey"><span class="blue">Résumer : </span> {{ book.description }}</p>
+                <p class="grey"><span class="blue">{% trans %}Author(s){% endtrans %} : </span> {{ book.author |upper }}</p>
+                <p class="grey"><span class="blue">{% trans %}Release{% endtrans %} : </span> {{ book.date|date("d/m/Y") }}</p>
+                <p class="grey"><span class="blue">{% trans %}Category{% endtrans %} : </span>{{ book.category.name }}</p>
+                <p class="grey"><span class="blue">{% trans %}Summarize{% endtrans %} : </span> {{ book.description }}</p>
                 {% if book.borrower is null %}
                     <div class="marg_30 center_flex">
-                        <a class="button_borrower" href="/book/update-borrower/{{ book.id }}">Emprunter</a>
+                        <a class="button_borrower" href="/book/update-borrower/{{ book.id }}">{% trans %}To borrow{% endtrans %}</a>
                     </div>
                 {% else %}
                     <div class="marg_30 center_flex">
-                        <a class="button_borrower" href="/book/update-borrower-delete/{{ book.id }}">Remettre</a>
+                        <a class="button_borrower" href="/book/update-borrower-delete/{{ book.id }}">{% trans %}To put back{% endtrans %}</a>
                         <div class="flexRow center_flex2">
-                            <p class="grey marg_30_rl"><span class="blue">Réservation : </span> {{ book.reserved |date("d/m/Y") }}</p>
-                            <p class="grey marg_30_rl"><span class="blue">Récupération : </span>{{ book.recovery |date("d/m/Y") }}</p>
+                            <p class="grey marg_30_rl"><span class="blue">{% trans %}Reservation{% endtrans %} : </span> {{ book.reserved |date("d/m/Y") }}</p>
+                            <p class="grey marg_30_rl"><span class="blue">{% trans %}Recovery{% endtrans %} : </span>{{ book.recovery |date("d/m/Y") }}</p>
                         </div>
                     </div>
                 {% endif %}

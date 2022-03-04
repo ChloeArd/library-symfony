@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier une catégorie{% endblock %}
+{% block title %}{% trans %}Update a category{% endtrans %}{% endblock %}
 
 {% block body %}
     {{ parent() }}
     <main>
-        <h1 class="titleBook center">Modifier une catégorie</h1>
+        <h1 class="titleBook center">{% trans %}Update a category{% endtrans %}</h1>
         <div class="container-fluid mt-4 w-50">
             {% form_theme form 'bootstrap_5_layout.html.twig' %}
             {{ form(form) }}

@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un emprunteur{% endblock %}
+{% block title %}{% trans %}Edit a borrower{% endtrans %}{% endblock %}
 
 {% block body %}
     {{ parent() }}
     <main>
-        <h1 class="titleBook center">Modifier un emprunteur</h1>
+        <h1 class="titleBook center">{% trans %}Edit a borrower{% endtrans %}</h1>
         <div class="container-fluid mt-4 w-50">
             {% form_theme form 'bootstrap_5_layout.html.twig' %}
             {{ form(form) }}

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ShelfController extends AbstractController {
 
@@ -31,7 +32,7 @@ class ShelfController extends AbstractController {
      * @return Response
      */
     #[Route('/shelf/add', name: 'shelf_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response {
+    public function add(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
 
         $shelf = new Shelf();
         $form = $this->createForm(ShelfType::class, $shelf);
@@ -41,8 +42,8 @@ class ShelfController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($shelf);
             $entityManager->flush();
-            $this->addFlash("success", "L'étagère a été créé avec succès !");
-            $id = $shelf->getId();
+            $message = $translator->trans('Shelf added successfully');
+            $this->addFlash("success", $message);
             return $this->redirectToRoute("shelf");
         }
         return $this->render('shelf/add.html.twig', ['form' => $form->createView()]);
@@ -55,14 +56,15 @@ class ShelfController extends AbstractController {
      * @return Response
      */
     #[Route('/shelf/update/{id}', name: 'shelf_update')]
-    public function update(Shelf $shelf, Request $request, EntityManagerInterface $entityManager): Response {
+    public function update(Shelf $shelf, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
 
         $form = $this->createForm(ShelfType::class, $shelf);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            $this->addFlash("success", "L'étagère a été modifié avec succès ! !");
+            $message = $translator->trans('Shelf modified successfully');
+            $this->addFlash("success", $message);
             return $this->redirectToRoute("shelf");
         }
         return $this->render('shelf/update.html.twig', ['form' => $form->createView()]);
@@ -75,9 +77,11 @@ class ShelfController extends AbstractController {
      * @return Response
      */
     #[Route('/shelf/delete/{id}', name: 'shelf_delete')]
-    public function delete(Shelf $shelf, EntityManagerInterface $entityManager): Response {
+    public function delete(Shelf $shelf, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response {
         $entityManager->remove($shelf);
         $entityManager->flush();
+        $message = $translator->trans('Shelf deleted successfully');
+        $this->addFlash("success", $message);
         return $this->redirectToRoute("shelf");
     }
 }

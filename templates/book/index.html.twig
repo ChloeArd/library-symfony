@@ -12,7 +12,7 @@
     <main class="width_80">
         {% if books is not empty%}
         <h1 class="center">{{ books.0.category.name}}</h1>
-        <a class="add" href="/book/add">Ajouter un livre</a>
+        <a class="add" href="/book/add">{% trans %}Add a book{% endtrans %}</a>
         <div class="marg_30 flexRow center_flex2">
             {% for book in books %}
                 <div class="containerBooks wrap center_flex">
@@ -25,9 +25,9 @@
         </div>
             {% else %}
                 <div class="marg_30">
-                    <a class="add" href="/book/add">Ajouter un livre</a>
+                    <a class="add" href="/book/add">{% trans %}Add a book{% endtrans %}</a>
                 </div>
-                <p>Il n'y a aucun livre pour le moment !</p>
+                <p>{% trans %}There are no books at the moment{% endtrans %}!</p>
         {% endif %}
 
     </main>

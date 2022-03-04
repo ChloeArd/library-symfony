@@ -7,7 +7,10 @@
 
         <main class="width_80">
             <h1 id="titleLibrary" class="center"><span>B</span><span>i</span> <span>B</span><span>l</span><span>i</span> <span>A</span><span>u</span> <span>T</span><span>e</span><span>k</span></h1>
-            <a class="add" href="/shelf/add">Ajouter une étagère</a>
+            <a class="add" href="/shelf/add">{% trans %}Add a shelf{% endtrans %}</a>
+
+
+
             <div class="marg_30">
                 {% for shelf in shelfs %}
                     <a href="/borrower-category/{{ shelf.id }}" class="shelf ">

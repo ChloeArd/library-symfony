@@ -16,11 +16,27 @@
     <body>
         {% block body %}
 
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class='alert alert-{{ type }}'>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             <header>
                 <h1><a class="white" href="/">Bi Bli Au Tek</a></h1>
                 <div class="text_r">
-                    <a href="{{ path('borrower_add') }}">Ajouter un emprunteur</a>
-                    <a href="{{ path('borrower_list') }}">Les emprunteurs</a>
+                    <a href="{{ path('borrower_add') }}">{% trans %}Add a borrower{% endtrans %}</a>
+                    <a href="{{ path('borrower_list') }}">{% trans %}Borrowers{% endtrans %}</a>
+                </div>
+                <div>
+                    {% for locale in locales %}
+                        {% if locale != app.request.locale %}
+                            <a class="nav-link" href="{{ path('change_locale', {'locale': locale}) }}"><img class="langue" src="{{ asset('img/'~locale~'.png') }}" alt="{{ locale }}"></a>
+                        {% endif %}
+                    {% endfor %}
+
                 </div>
             </header>
 

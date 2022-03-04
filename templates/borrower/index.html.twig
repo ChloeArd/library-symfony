@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les emprunteur{% endblock %}
+{% block title %}{% trans %}Borrowers{% endtrans %}{% endblock %}
 
 {% block body %}
     {{ parent() }}
@@ -12,10 +12,10 @@
                 <p class="grey"><span class="blue">Email : </span>{{ borrower.email }}</p>
                 <div class="flexColumn">
                     <div class="marg_30">
-                        <a class="update" href="/borrower/update/{{ borrower.id }}">Modifier<i class="fa-solid fa-pen-to-square marg_30_rl"></i></a>
+                        <a class="update" href="/borrower/update/{{ borrower.id }}">{% trans %}Edit{% endtrans %}<i class="fa-solid fa-pen-to-square marg_30_rl"></i></a>
                     </div>
                     <div class="marg_30">
-                        <a class="delete" href="/borrower/delete/{{ borrower.id }}">Supprimer<i class="fa-solid fa-delete-left marg_30_rl"></i></a>
+                        <a class="delete" href="/borrower/delete/{{ borrower.id }}">{% trans %}Delete{% endtrans %}<i class="fa-solid fa-delete-left marg_30_rl"></i></a>
                     </div>
                 </div>
             </div>
