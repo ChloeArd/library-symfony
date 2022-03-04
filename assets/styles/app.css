@@ -236,3 +236,8 @@ h1 > a:hover, a:hover {
 .langue {
     width: 40px;
 }
+
+.right {
+    position: absolute;
+    right: 20px;
+}
