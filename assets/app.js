@@ -45,7 +45,6 @@ if(document.getElementById("alert")) {
     setTimeout(
         function () {
             document.getElementById("alert").style.display = "none";
-            console.log("a");
         }
     , 5000);
 }
